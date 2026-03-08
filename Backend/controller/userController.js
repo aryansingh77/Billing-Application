@@ -79,10 +79,11 @@ const loginController = async (req, res) => {
         }
         const isPasswordValid = encryptPassword.matchPwd(userPassword, user.userPassword);
         if (isPasswordValid) {
-            if (userType === 'ADMIN') {
-                return res.status(200).json({ message: 'Admin login successful' });
+            const token = generateToken(user._id, user.userType);
+            if (user.userType === 'ADMIN') {
+                return res.status(200).json({ message: 'Admin login successful', token });
             } else {
-                return res.status(200).json({ message: 'User login successful' });
+                return res.status(200).json({ message: 'User login successful', token });
             }            
         }
         else {
